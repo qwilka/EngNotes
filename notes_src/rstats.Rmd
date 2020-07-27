@@ -1,5 +1,7 @@
 # R programming  {#rstats}
 
+NEW test change [@bai2014subsea]
+
 Here are some notes about the R programming language.
 
 sing the **bookdown** package in this sample book, which was built on top of R Markdown and **knitr** [@xie2015].

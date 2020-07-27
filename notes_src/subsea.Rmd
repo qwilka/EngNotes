@@ -1,0 +1,29 @@
+# Subsea Engineering  {#subsea}
+
+Here are some notes about subsea engineering.
+
+this is the citation [@bai2014]
+
+here is another citation [@bai2014subsea]
+
+## Design Phases
+
+### Conceptual
+
+* establish technical feasibility
+* identify 
+  * required information
+  * interfaces
+  * design codes
+  * long-lead items
+* basic cost and schedule estimates (+30%)
+
+
+### FEED
+
+* fix the design concept
+* estabilish pipe requirements
+  * sizes
+  * materials and grades
+* prepare authority applications  
+

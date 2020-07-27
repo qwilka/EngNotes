@@ -1,0 +1,10 @@
+
+rmarkdown::render_site(encoding = 'UTF-8')
+bookdown::render_book("index.Rmd", "bookdown::gitbook")
+
+Bibtex
+=======
+https://tex.stackexchange.com/questions/143/what-are-good-sites-to-find-citations-in-bibtex-format/233633#233633
+https://www.doi2bib.org/
+http://www.ottobib.com/
+bibtex-search -s google bai subsea engineering

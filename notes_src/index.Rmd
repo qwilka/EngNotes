@@ -15,6 +15,8 @@ biblio-style: apalike
 <!--"Testing Engineering Notes"-->
 # About Engineering Notes
 
+THIS IS index.Rmd
+
 ![](./img/icon-192.png)
 
 A *GitBook* is a useful tool for creating (open?) educational resources. It is an online "book" format, that can be hosted directly from a GitHub repository. You are currently reading a GitBook designed to help you get started creating your own educational GitBooks for your courses (how meta!). It does this in two ways: By explaining how to create GitBooks, and by serving as a template that you can copy and edit, instead of having to start from scratch. This template GitBook has all the settings that I consider to be useful for educational GitBooks, but you can always customize it.
