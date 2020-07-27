@@ -1,6 +1,6 @@
 # R programming  {#rstats}
 
-NEW test change [@bai2014subsea]
+NEW test change [@bai2014subsea] THIRD edit today
 
 Here are some notes about the R programming language.
 
