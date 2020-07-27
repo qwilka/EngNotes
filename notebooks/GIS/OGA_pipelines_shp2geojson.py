@@ -120,7 +120,7 @@ for _f in OGA_pl_data['features']:
     if 'PIPELINE_LENGTH_M' in _meta:
         length = float(_meta['PIPELINE_LENGTH_M'])
         if length<1000:
-            new_meta["length"] = "{:d} m".format(int(length))
+            new_meta["length"] = "{:d} m".format(round(length))
         else:
             new_meta["length"] = "{:.3g} km".format(length/1000.0) # int(_meta['PIPELINE_LENGTH_M'])
 
@@ -137,7 +137,7 @@ for _f in OGA_pl_data['features']:
             new_meta["Do"] = '{:.3g} in'.format(_meta['DIAMETER']) # _meta['DIAMETER']*25.4
         #new_meta["Do"] = int(new_meta["Do"]) # round(new_meta["Do"], 3)
         else:
-            new_meta["Do"] = "{:d} mm".format(int(_meta['DIAMETER']))
+            new_meta["Do"] = "{:.1g} mm".format(round(_meta['DIAMETER']))
 
     if 'STATUS' in _meta:
         new_meta["status"] = _meta['STATUS']
@@ -155,7 +155,7 @@ for _f in OGA_pl_data['features']:
         new_meta["Di"] = '{:.1g} mm'.format(_meta['INTERNAL_DIAMETER_MM']) # int(_meta['INTERNAL_DIAMETER_MM'])        
 
     if 'WALL_THICKNESS_MM' in _meta:
-        new_meta["WT"] = int(_meta['WALL_THICKNESS_MM'])           
+        new_meta["WT"] = round(_meta['WALL_THICKNESS_MM'])           
         
     if 'OPERATING_PRESSURE_MAX_BARG' in _meta:
         new_meta["MOP"] = "{:.1g} bar".format(_meta['OPERATING_PRESSURE_MAX_BARG']) # int(_meta['OPERATING_PRESSURE_MAX_BARG'])        
