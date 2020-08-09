@@ -1,0 +1,9 @@
+
+
+geopandas
+=========
+https://towardsdatascience.com/geopandas-101-plot-any-data-with-a-latitude-and-longitude-on-a-map-98e01944b972
+
+commands
+==========
+$ ogrinfo -al NPD_FactMapsData_v3_0.gdb/ > factmaps_info.txt
