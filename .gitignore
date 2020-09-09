@@ -1,6 +1,7 @@
 .vscode/
 *.pflacs
 *.hdf5
+_tmp
 
 # R Bookdown
 .Rhistory
