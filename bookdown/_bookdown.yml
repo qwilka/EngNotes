@@ -3,7 +3,7 @@ rmd_files: ["index.Rmd",
             "rstats.Rmd",
             "subsea.Rmd",
             "references.Rmd"]
-output_dir: "../docs"
+output_dir: "../docs/bookdown"
 language:
   ui:
     chapter_name: "Chapter "
