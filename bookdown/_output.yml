@@ -5,6 +5,7 @@ bookdown::gitbook:
       before: |
         <li><a href="./">ENGnotes Testing</a></li>
       after: |
+        <li><a href="https://qwilka.github.io/EngNotes/">EngNotes table-of-contents</a></li>
         <li><a href="https://qwilka.github.io/" target="blank">Qwilka homepage</a></li>
     edit: https://github.com/qwilka/EngNotes/edit/master/%s
     download: ["pdf"]
