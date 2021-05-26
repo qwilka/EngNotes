@@ -1,0 +1,8 @@
+
+
+https://nbsphinx.readthedocs.io/en/0.8.5/usage.html#Running-Sphinx
+conda activate py3
+cd src/nbsphinx
+python -m sphinx source build
+
+

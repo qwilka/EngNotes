@@ -1,0 +1,852 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notebook for investigating JONSWAP waves. &#8212; TestNBsphinx 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Pipe pressure containment (bursting) according to DNVGL-ST-F101." href="pressure_containment.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+</style>
+<div class="section" id="Notebook-for-investigating-JONSWAP-waves.">
+<h1>Notebook for investigating JONSWAP waves.<a class="headerlink" href="#Notebook-for-investigating-JONSWAP-waves." title="Permalink to this headline">¶</a></h1>
+<p>References: DNVGL-RP-F109 On-bottom stability design of submarine pipelines, edition May 2017. DNVGL-RP-C205 Environmental conditions and environmental loads, edition August 2017. Soulsby, R.L.and Smallman, J.V., 1986, A direct method of calculating bottom orbital velocity under waves, Technical Report No. SR76, Hydraulics Research Wallingford. <a class="reference external" href="http://eprints.hrwallingford.co.uk/761/">http://eprints.hrwallingford.co.uk/761/</a></p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[159]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[160]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.optimize</span>
+<span class="kn">import</span> <span class="nn">scipy.integrate</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(S_{\eta\eta} = \alpha \cdot g^2 \cdot \omega^{-5} \cdot \exp^{-\frac{5}{4}\left(\frac{\omega}{\omega_p}\right)^{-4}} \cdot \gamma^{\exp\left(-0.5 \left(\frac{\omega-\omega_p}{\sigma \cdot \omega_p} \right)^2 \right)}\)</span>       JONSWAP spectrum «S_etaeta»</p>
+<p><span class="math notranslate nohighlight">\(\alpha = \frac{5}{16} \cdot \frac{H_s^2 \cdot \omega_p^4}{g^2} \cdot \left(1 - 0.287 \cdot \ln{\gamma} \right)\)</span>       Phillip’s constant «phillips»</p>
+<p>$:nbsphinx-math:<a href="#id1"><span class="problematic" id="id2">`</span></a>sigma <a href="#id3"><span class="problematic" id="id4">`</span></a>=</p>
+<p>$       Spectral width parameter «sigma»</p>
+<p>$:nbsphinx-math:<a href="#id5"><span class="problematic" id="id6">`</span></a>gamma <a href="#id7"><span class="problematic" id="id8">`</span></a>=</p>
+<p>$       Peak-enhancement factor «gamma»</p>
+<p><span class="math notranslate nohighlight">\(\phi = \frac{T_p}{\sqrt{H_s}}\)</span>       «phi»</p>
+<p>Ref: DNVGL-RP-F109, sec. 3.4.3, p. 16, eqns. 3.4, 3.5, 3.6, 3.7</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[161]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">JONSWAP</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">H_s</span><span class="p">,</span> <span class="n">T_p</span><span class="p">,</span> <span class="n">grav_acc</span><span class="o">=</span><span class="mf">9.81</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">omega_p</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">T_p</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">omega</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="mf">0.09</span><span class="p">)</span>
+    <span class="n">sigma</span><span class="p">[</span><span class="n">omega</span><span class="o">&lt;=</span><span class="n">omega_p</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.07</span>
+    <span class="n">phi</span> <span class="o">=</span> <span class="n">T_p</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">H_s</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">gamma</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">phi</span><span class="o">&lt;=</span><span class="mf">3.6</span><span class="p">:</span>
+            <span class="n">gamma</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="k">elif</span> <span class="mf">3.6</span><span class="o">&lt;</span><span class="n">phi</span><span class="o">&lt;</span><span class="mi">5</span><span class="p">:</span>
+            <span class="n">gamma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">5.75</span><span class="o">-</span><span class="mf">1.15</span><span class="o">*</span><span class="n">phi</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">gamma</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">phillips</span> <span class="o">=</span> <span class="p">(</span> <span class="mi">5</span><span class="o">/</span><span class="mi">16</span> <span class="o">*</span> <span class="n">H_s</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span>
+                <span class="n">omega_p</span><span class="o">**</span><span class="mi">4</span> <span class="o">/</span> <span class="n">grav_acc</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span>
+                <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="mf">0.287</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">gamma</span><span class="p">))</span> <span class="p">)</span>
+    <span class="n">S_etaeta</span> <span class="o">=</span> <span class="p">(</span> <span class="n">phillips</span> <span class="o">*</span> <span class="n">grav_acc</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">omega</span><span class="o">**-</span><span class="mi">5</span> <span class="o">*</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="o">/</span><span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="n">omega</span><span class="o">/</span><span class="n">omega_p</span><span class="p">)</span><span class="o">**-</span><span class="mi">4</span> <span class="p">)</span> <span class="o">*</span>
+                <span class="n">gamma</span><span class="o">**</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="o">*</span><span class="p">((</span><span class="n">omega</span><span class="o">-</span><span class="n">omega_p</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">sigma</span><span class="o">*</span><span class="n">omega_p</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="k">return</span> <span class="n">S_etaeta</span><span class="p">,</span> <span class="n">gamma</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[162]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">omega</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
+<span class="n">S_etaeta1</span><span class="p">,</span> <span class="n">gamma</span> <span class="o">=</span> <span class="n">JONSWAP</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">H_s</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">T_p</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">S_etaeta2</span><span class="p">,</span> <span class="n">gamma</span> <span class="o">=</span> <span class="n">JONSWAP</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">H_s</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">T_p</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">S_etaeta3</span><span class="p">,</span> <span class="n">gamma</span> <span class="o">=</span> <span class="n">JONSWAP</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">H_s</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">T_p</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;JONSWAP spectra ($H_s=4m$,  $T_p=8s$) </span><span class="se">\n</span><span class="s2"> example from DNVGL-RP-C205, sec. 3.5.5.2, fig. 3-9</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">S_etaeta1</span><span class="p">,</span> <span class="s1">&#39;-r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$\gamma=1$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">S_etaeta2</span><span class="p">,</span> <span class="s1">&#39;-g&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$\gamma=2$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">S_etaeta3</span><span class="p">,</span> <span class="s1">&#39;-b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$\gamma=5$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;$\omega$&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s2">&quot;x-large&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;$S_{\eta\eta}(\omega)$&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s2">&quot;x-large&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[162]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.legend.Legend at 0x7efbc0669898&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/JONSWAP_5_1.png" src="_images/JONSWAP_5_1.png" />
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(T = \left[ \frac{g}{2\pi\lambda} \cdot \tanh \left( \frac{2\pi d}{\lambda} \right) \right]^{-\frac{1}{2}}\)</span>       <span class="math notranslate nohighlight">\(\lambda\)</span> wave length «wavelen»,       T wave period</p>
+<p><span class="math notranslate nohighlight">\(k = \frac{2 \pi}{\lambda}\)</span>    wave number,       <span class="math notranslate nohighlight">\(\omega = \frac{2 \pi}{T}\)</span>     angular frequency «omega»</p>
+<p>Ref: DNVGL-RP-C205, sec. 3.2.2.3, p. 46</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[163]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">find_wavelen_func</span><span class="p">(</span><span class="n">_lambda</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">grav_acc</span><span class="o">=</span><span class="mf">9.81</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">T</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">_lambda</span><span class="o">/</span><span class="n">grav_acc</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">depth</span><span class="o">/</span><span class="n">_lambda</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[164]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">calc_wave_length</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">grav_acc</span><span class="o">=</span><span class="mf">9.81</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">wavelen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">_T</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">wavelen</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="n">bisect</span><span class="p">(</span><span class="n">find_wavelen_func</span><span class="p">,</span>
+                                        <span class="mf">0.1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">_T</span><span class="p">,</span> <span class="n">depth</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+                <span class="n">wavelen</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">NaN</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">wavelen</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="n">bisect</span><span class="p">(</span><span class="n">find_wavelen_func</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span>
+                                    <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">depth</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">wavelen</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[165]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">T</span><span class="o">=</span><span class="mi">10</span><span class="p">;</span> <span class="n">depth</span><span class="o">=</span><span class="mi">2000</span>
+<span class="n">wavelen</span> <span class="o">=</span> <span class="n">calc_wave_length</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">depth</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;wave length=</span><span class="si">{</span><span class="n">wavelen</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">m  (T=</span><span class="si">{</span><span class="n">T</span><span class="si">}</span><span class="s2">s, depth=</span><span class="si">{</span><span class="n">depth</span><span class="si">}</span><span class="s2">m)&quot;</span><span class="p">)</span>
+<span class="n">T</span><span class="o">=</span><span class="mi">10</span><span class="p">;</span> <span class="n">depth</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">wavelen</span> <span class="o">=</span> <span class="n">calc_wave_length</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">depth</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;wave length=</span><span class="si">{</span><span class="n">wavelen</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">m  (T=</span><span class="si">{</span><span class="n">T</span><span class="si">}</span><span class="s2">s, depth=</span><span class="si">{</span><span class="n">depth</span><span class="si">}</span><span class="s2">m)&quot;</span><span class="p">)</span>
+<span class="n">T</span><span class="o">=</span><span class="mi">15</span><span class="p">;</span> <span class="n">depth</span><span class="o">=</span><span class="mi">90</span>
+<span class="n">wavelen</span> <span class="o">=</span> <span class="n">calc_wave_length</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">depth</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;wave length=</span><span class="si">{</span><span class="n">wavelen</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">m  (T=</span><span class="si">{</span><span class="n">T</span><span class="si">}</span><span class="s2">s, depth=</span><span class="si">{</span><span class="n">depth</span><span class="si">}</span><span class="s2">m)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+wave length=156.131m  (T=10s, depth=2000m)
+wave length=31.111m  (T=10s, depth=1m)
+wave length=329.340m  (T=15s, depth=90m)
+</pre></div></div>
+</div>
+<p><span class="math notranslate nohighlight">\(S_{UU}(\omega) = G^2(\omega) \cdot S_{\eta\eta}(\omega)\)</span></p>
+<p><span class="math notranslate nohighlight">\(G(\omega) = \frac{\omega}{\sinh(k \cdot d)}\)</span></p>
+<p>Ref: DNVGL-RP-F109, sec. 3.4.3, p. 17, eqns. 3.8, 3.9</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[166]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">JONSWAP_depth_transform</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">S_etaeta</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">D</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">e</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">grav_acc</span><span class="o">=</span><span class="mf">9.81</span><span class="p">):</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">omega</span>
+    <span class="n">wavelen</span> <span class="o">=</span> <span class="n">calc_wave_length</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">depth</span><span class="p">)</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">wavelen</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">omega</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cosh</span><span class="p">(</span><span class="n">k</span><span class="o">*</span><span class="p">(</span><span class="n">D</span><span class="o">+</span><span class="n">e</span><span class="p">))</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sinh</span><span class="p">(</span><span class="n">k</span><span class="o">*</span><span class="n">depth</span><span class="p">)</span>
+    <span class="n">S_uu</span> <span class="o">=</span> <span class="n">G</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">S_etaeta</span>
+    <span class="k">return</span> <span class="n">S_uu</span><span class="p">,</span> <span class="n">G</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[167]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">omega</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
+<span class="n">T_p</span><span class="o">=</span><span class="mi">15</span><span class="p">;</span> <span class="n">depth</span><span class="o">=</span><span class="mi">90</span><span class="p">;</span> <span class="n">H_s</span><span class="o">=</span><span class="mi">10</span>
+<span class="n">omega</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">S_etaeta</span><span class="p">,</span> <span class="n">gamma</span> <span class="o">=</span> <span class="n">JONSWAP</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">H_s</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">T_p</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">S_uu</span><span class="p">,</span> <span class="n">G</span> <span class="o">=</span> <span class="n">JONSWAP_depth_transform</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">S_etaeta</span><span class="p">,</span> <span class="n">D</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;JONSWAP spectra - surface and at depth </span><span class="se">\n</span><span class="s2">($H_s=</span><span class="si">{</span><span class="n">H_s</span><span class="si">}</span><span class="s2">m$,  $T_p=</span><span class="si">{</span><span class="n">T_p</span><span class="si">}</span><span class="s2">s$, $depth=</span><span class="si">{</span><span class="n">depth</span><span class="si">}</span><span class="s2">m$, $\gamma=</span><span class="si">{</span><span class="n">gamma</span><span class="si">}</span><span class="s2">$)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">S_etaeta</span><span class="p">,</span> <span class="s1">&#39;-r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$S_{\eta\eta}$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="s1">&#39;--g&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$G$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">S_uu</span><span class="p">,</span> <span class="s1">&#39;-b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$S_</span><span class="si">{UU}</span><span class="s1">$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;$\omega$&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s2">&quot;x-large&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;$S(\omega)$&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s2">&quot;x-large&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[167]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.legend.Legend at 0x7efbc0581c18&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/JONSWAP_12_1.png" src="_images/JONSWAP_12_1.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[168]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">T_p</span><span class="o">=</span><span class="mi">15</span><span class="p">;</span> <span class="n">depth</span><span class="o">=</span><span class="mi">90</span><span class="p">;</span> <span class="n">H_s</span><span class="o">=</span><span class="mi">10</span>
+<span class="n">omega</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">S_etaeta</span><span class="p">,</span> <span class="n">gamma</span> <span class="o">=</span> <span class="n">JONSWAP</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">H_s</span><span class="o">=</span><span class="n">H_s</span><span class="p">,</span> <span class="n">T_p</span><span class="o">=</span><span class="n">T_p</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">M_0</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">16</span> <span class="o">*</span> <span class="n">H_s</span><span class="o">**</span><span class="mi">2</span>   <span class="c1"># DNVGL-RP-C205, sec. 3.5.5.3, p. 66</span>
+<span class="n">U_s</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">M_0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;approx. M_0 = </span><span class="si">{</span><span class="n">M_0</span><span class="si">}</span><span class="s2">, U_s=</span><span class="si">{</span><span class="n">U_s</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">M_0</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span><span class="n">S_etaeta</span><span class="p">,</span> <span class="n">omega</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_0 = </span><span class="si">{</span><span class="n">M_0</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">M_2</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">16</span> <span class="o">*</span> <span class="n">H_s</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">T_p</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">11</span><span class="o">+</span><span class="n">gamma</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">5</span><span class="o">+</span><span class="n">gamma</span><span class="p">)</span>  <span class="c1"># DNVGL-RP-C205, sec. 3.5.5.3, p. 66</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;approx. M_2 = </span><span class="si">{</span><span class="n">M_2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">M_2</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span><span class="n">S_etaeta</span><span class="o">*</span><span class="n">omega</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">omega</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_2 = </span><span class="si">{</span><span class="n">M_2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">U_s</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">M_0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;U_s = </span><span class="si">{</span><span class="n">U_s</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">T_u</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">M_0</span><span class="o">/</span><span class="n">M_2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;T_u = </span><span class="si">{</span><span class="n">T_u</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">S_uu</span><span class="p">,</span> <span class="n">G</span> <span class="o">=</span> <span class="n">JONSWAP_depth_transform</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">S_etaeta</span><span class="p">,</span> <span class="n">D</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">)</span>
+<span class="n">S_uu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">S_uu</span><span class="p">)</span>
+<span class="c1">#print(S_uu)</span>
+<span class="n">M_0</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span><span class="n">S_uu</span><span class="p">,</span> <span class="n">omega</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_0 = </span><span class="si">{</span><span class="n">M_0</span><span class="si">}</span><span class="s2">, depth=</span><span class="si">{</span><span class="n">depth</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">M_2</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span><span class="n">S_uu</span><span class="o">*</span><span class="n">omega</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">omega</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_2 = </span><span class="si">{</span><span class="n">M_2</span><span class="si">}</span><span class="s2">, depth=</span><span class="si">{</span><span class="n">depth</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">U_s</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">M_0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;U_s = </span><span class="si">{</span><span class="n">U_s</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">T_u</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">M_0</span><span class="o">/</span><span class="n">M_2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;T_u = </span><span class="si">{</span><span class="n">T_u</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+approx. M_0 = 6.25, U_s=5.0
+M_0 = 6.247031239490564
+approx. M_2 = 2.193245422464302
+M_2 = 2.119695233924831
+U_s = 4.998812354746101
+T_u = 10.786486283961281
+M_0 = 0.09946216862130082, depth=90
+M_2 = 0.01625091062949805, depth=90
+U_s = 0.6307524668879253
+T_u = 15.54425740865491
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[169]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># example DNV-RP-F105 course p. 67</span>
+<span class="n">T_p</span><span class="o">=</span><span class="mi">15</span><span class="p">;</span> <span class="n">depth</span><span class="o">=</span><span class="mi">90</span><span class="p">;</span> <span class="n">H_s</span><span class="o">=</span><span class="mi">10</span>
+<span class="n">T_n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">depth</span><span class="o">/</span><span class="mf">9.81</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;T_n = </span><span class="si">{</span><span class="n">T_n</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">T_n_T_p</span> <span class="o">=</span> <span class="n">T_n</span><span class="o">/</span><span class="n">T_p</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;T_n/T_p = </span><span class="si">{</span><span class="n">T_n_T_p</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">U_s</span> <span class="o">=</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">H_s</span><span class="o">/</span><span class="n">T_n</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;U_s = </span><span class="si">{</span><span class="n">U_s</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+T_n = 3.0289126640769135
+T_n/T_p = 0.2019275109384609
+U_s = 0.660302960768767
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[170]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># 1986 Soulsby and Smallman  p. 17</span>
+<span class="n">T_z</span><span class="o">=</span><span class="mi">10</span><span class="p">;</span> <span class="n">depth</span><span class="o">=</span><span class="mi">50</span><span class="p">;</span> <span class="n">H_s</span><span class="o">=</span><span class="mi">5</span>
+<span class="n">T_p</span> <span class="o">=</span> <span class="mf">1.281</span> <span class="o">*</span><span class="n">T_z</span>  <span class="c1"># eq. 19, p. 13  (see also Table 1 in appendix)</span>
+<span class="n">omega</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">S_etaeta</span><span class="p">,</span> <span class="n">gamma</span> <span class="o">=</span> <span class="n">JONSWAP</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">H_s</span><span class="o">=</span><span class="n">H_s</span><span class="p">,</span> <span class="n">T_p</span><span class="o">=</span><span class="n">T_p</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">M_0</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">16</span> <span class="o">*</span> <span class="n">H_s</span><span class="o">**</span><span class="mi">2</span>   <span class="c1"># DNVGL-RP-C205, sec. 3.5.5.3, p. 66</span>
+<span class="n">U_s</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">M_0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;approx. M_0 = </span><span class="si">{</span><span class="n">M_0</span><span class="si">}</span><span class="s2">, U_s=</span><span class="si">{</span><span class="n">U_s</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">M_0</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span><span class="n">S_etaeta</span><span class="p">,</span> <span class="n">omega</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_0 = </span><span class="si">{</span><span class="n">M_0</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">M_2</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">16</span> <span class="o">*</span> <span class="n">H_s</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">T_p</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">11</span><span class="o">+</span><span class="n">gamma</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">5</span><span class="o">+</span><span class="n">gamma</span><span class="p">)</span>  <span class="c1"># DNVGL-RP-C205, sec. 3.5.5.3, p. 66</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;approx. M_2 = </span><span class="si">{</span><span class="n">M_2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">M_2</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span><span class="n">S_etaeta</span><span class="o">*</span><span class="n">omega</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">omega</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_2 = </span><span class="si">{</span><span class="n">M_2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">U_s</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">M_0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;U_s = </span><span class="si">{</span><span class="n">U_s</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">T_u</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">M_0</span><span class="o">/</span><span class="n">M_2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;T_u = </span><span class="si">{</span><span class="n">T_u</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">S_uu</span><span class="p">,</span> <span class="n">G</span> <span class="o">=</span> <span class="n">JONSWAP_depth_transform</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">S_etaeta</span><span class="p">,</span> <span class="n">D</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">)</span>
+<span class="n">S_uu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">S_uu</span><span class="p">)</span>
+<span class="c1">#print(S_uu)</span>
+<span class="n">M_0</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span><span class="n">S_uu</span><span class="p">,</span> <span class="n">omega</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_0 = </span><span class="si">{</span><span class="n">M_0</span><span class="si">}</span><span class="s2">, depth=</span><span class="si">{</span><span class="n">depth</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">M_2</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span><span class="n">S_uu</span><span class="o">*</span><span class="n">omega</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">omega</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_2 = </span><span class="si">{</span><span class="n">M_2</span><span class="si">}</span><span class="s2">, depth=</span><span class="si">{</span><span class="n">depth</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">T_n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">depth</span><span class="o">/</span><span class="mf">9.81</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;T_n = </span><span class="si">{</span><span class="n">T_n</span><span class="si">}</span><span class="s2">, depth=</span><span class="si">{</span><span class="n">depth</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">U_s</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">M_0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;U_s = </span><span class="si">{</span><span class="n">U_s</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">T_u</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">M_0</span><span class="o">/</span><span class="n">M_2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;T_u = </span><span class="si">{</span><span class="n">T_u</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+approx. M_0 = 1.5625, U_s=2.5
+M_0 = 1.5611047766495092
+approx. M_2 = 0.7518158872369117
+M_2 = 0.7198081834465321
+U_s = 2.4988835720373284
+T_u = 9.253105306233785
+M_0 = 0.06997540546193502, depth=50
+M_2 = 0.017071438432567032, depth=50
+T_n = 2.2576182049286544, depth=50
+U_s = 0.5290572954300319
+T_u = 12.720890728873341
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[184]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">calc_Us_Tu_at_depth</span><span class="p">(</span><span class="n">depth</span><span class="p">,</span> <span class="n">H_s</span><span class="p">,</span> <span class="n">T_p</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">grav_acc</span><span class="o">=</span><span class="mf">9.81</span><span class="p">):</span>
+    <span class="n">omega</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mi">600</span><span class="p">)</span>
+    <span class="n">S_etaeta</span><span class="p">,</span> <span class="n">gamma</span> <span class="o">=</span> <span class="n">JONSWAP</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">H_s</span><span class="o">=</span><span class="n">H_s</span><span class="p">,</span> <span class="n">T_p</span><span class="o">=</span><span class="n">T_p</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="n">gamma</span><span class="p">)</span>
+    <span class="n">S_uu</span><span class="p">,</span> <span class="n">G</span> <span class="o">=</span> <span class="n">JONSWAP_depth_transform</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">S_etaeta</span><span class="p">,</span> <span class="n">D</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">)</span>
+    <span class="n">S_uu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">S_uu</span><span class="p">)</span>
+    <span class="n">M_0</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span><span class="n">S_uu</span><span class="p">,</span> <span class="n">omega</span><span class="p">)</span>
+    <span class="n">M_2</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span><span class="n">S_uu</span><span class="o">*</span><span class="n">omega</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">omega</span><span class="p">)</span>
+    <span class="n">U_s</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">M_0</span><span class="p">)</span>
+    <span class="n">T_u</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">M_0</span><span class="o">/</span><span class="n">M_2</span><span class="p">)</span>
+    <span class="n">T_n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">depth</span><span class="o">/</span><span class="n">grav_acc</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">U_s</span><span class="p">,</span> <span class="n">T_u</span><span class="p">,</span> <span class="n">T_n</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[172]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Soulsby &amp; Smallman (1986), p. 17</span>
+<span class="n">H_s</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">T_z</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">T_p</span> <span class="o">=</span> <span class="mf">1.281</span><span class="o">*</span><span class="n">T_z</span>
+<span class="n">gamma</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">depth</span><span class="o">=</span><span class="mi">10</span>
+<span class="n">U_s</span><span class="p">,</span> <span class="n">T_u</span><span class="p">,</span> <span class="n">T_n</span> <span class="o">=</span> <span class="n">calc_Us_Tu_at_depth</span><span class="p">(</span><span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">,</span> <span class="n">H_s</span><span class="o">=</span><span class="n">H_s</span><span class="p">,</span> <span class="n">T_p</span><span class="o">=</span><span class="n">T_p</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="n">gamma</span><span class="p">)</span>
+<span class="n">Tn_Tz</span> <span class="o">=</span> <span class="n">T_n</span><span class="o">/</span><span class="n">T_z</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;U_s=</span><span class="si">{</span><span class="n">U_s</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, T_u=</span><span class="si">{</span><span class="n">T_u</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, T_n=</span><span class="si">{</span><span class="n">T_n</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, T_n/T_z=</span><span class="si">{</span><span class="n">Tn_Tz</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, depth=</span><span class="si">{</span><span class="n">depth</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">U_m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">U_s</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;U_m=</span><span class="si">{</span><span class="n">U_m</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">depth</span><span class="o">=</span><span class="mi">50</span>
+<span class="n">U_s</span><span class="p">,</span> <span class="n">T_u</span><span class="p">,</span> <span class="n">T_n</span> <span class="o">=</span> <span class="n">calc_Us_Tu_at_depth</span><span class="p">(</span><span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">,</span> <span class="n">H_s</span><span class="o">=</span><span class="n">H_s</span><span class="p">,</span> <span class="n">T_p</span><span class="o">=</span><span class="n">T_p</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="n">gamma</span><span class="p">)</span>
+<span class="n">Tn_Tz</span> <span class="o">=</span> <span class="n">T_n</span><span class="o">/</span><span class="n">T_z</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;U_s=</span><span class="si">{</span><span class="n">U_s</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, T_u=</span><span class="si">{</span><span class="n">T_u</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, T_n=</span><span class="si">{</span><span class="n">T_n</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, T_n/T_z=</span><span class="si">{</span><span class="n">Tn_Tz</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, depth=</span><span class="si">{</span><span class="n">depth</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1"># results not consistent (M_2 not correct??, see below)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+U_s=1.951, T_u=8.772, T_n=1.010, T_n/T_z=0.126, depth=10
+U_m=2.7596485401595983
+U_s=0.355, T_u=10.927, T_n=2.258, T_n/T_z=0.282, depth=50
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[173]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># 2016 Thesis SPECIFIC SOFTWARE TOOL DEVELOPMENT FOR RIGID PIPELINE DESIGN, Nuno Filipe Salsa da Silva Ferreira</span>
+<span class="c1"># https://fenix.tecnico.ulisboa.pt/downloadFile/1689244997255722/dissertacao.pdf</span>
+<span class="c1"># sec. 5.2.4, p. 83;  M0=0.5184 m /Hz; M2=0.0043 m /Hz</span>
+<span class="n">gamma</span> <span class="o">=</span> <span class="mi">1</span>   <span class="c1"># page 72</span>
+<span class="n">H_s</span> <span class="o">=</span> <span class="mf">2.88</span>
+<span class="n">T_p</span> <span class="o">=</span> <span class="mf">15.5</span>
+<span class="c1">#U_s, T_u, T_n = calc_Us_Tu_at_depth(depth=depth, H_s=H_s, T_p=T_p, gamma=gamma)</span>
+<span class="c1">#print(f&quot;U_s={U_s:.3f}, T_u={T_u:.3f}, T_n={T_n:.3f}, T_n/T_z={Tn_Tz:.3f}, depth={depth}&quot;)</span>
+<span class="n">depth</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">omega</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">S_etaeta</span><span class="p">,</span> <span class="n">gamma</span> <span class="o">=</span> <span class="n">JONSWAP</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">H_s</span><span class="o">=</span><span class="n">H_s</span><span class="p">,</span> <span class="n">T_p</span><span class="o">=</span><span class="n">T_p</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="n">gamma</span><span class="p">)</span>
+<span class="n">M_0</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span><span class="n">S_etaeta</span><span class="p">,</span> <span class="n">omega</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_0 = </span><span class="si">{</span><span class="n">M_0</span><span class="si">}</span><span class="s2">, depth=</span><span class="si">{</span><span class="n">depth</span><span class="si">}</span><span class="s2"> (expected 0.5184) &quot;</span><span class="p">)</span>
+<span class="n">M_2</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span><span class="n">S_etaeta</span><span class="o">*</span><span class="n">omega</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">omega</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_2 = </span><span class="si">{</span><span class="n">M_2</span><span class="si">}</span><span class="s2">, depth=</span><span class="si">{</span><span class="n">depth</span><span class="si">}</span><span class="s2"> (expected 0.0043)&quot;</span><span class="p">)</span>
+<span class="n">U_s</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">M_0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;U_s = </span><span class="si">{</span><span class="n">U_s</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">T_u</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">M_0</span><span class="o">/</span><span class="n">M_2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;T_u = </span><span class="si">{</span><span class="n">T_u</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">depth</span> <span class="o">=</span> <span class="mi">937</span> <span class="c1"># minimum water depth, page 69</span>
+<span class="n">S_uu</span><span class="p">,</span> <span class="n">G</span> <span class="o">=</span> <span class="n">JONSWAP_depth_transform</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">S_etaeta</span><span class="p">,</span> <span class="n">D</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">)</span>
+<span class="n">S_uu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">S_uu</span><span class="p">)</span>
+<span class="c1">#print(S_uu)</span>
+<span class="n">M_0</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span><span class="n">S_uu</span><span class="p">,</span> <span class="n">omega</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_0 = </span><span class="si">{</span><span class="n">M_0</span><span class="si">}</span><span class="s2">, depth=</span><span class="si">{</span><span class="n">depth</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">M_2</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span><span class="n">S_uu</span><span class="o">*</span><span class="n">omega</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">omega</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_2 = </span><span class="si">{</span><span class="n">M_2</span><span class="si">}</span><span class="s2">, depth=</span><span class="si">{</span><span class="n">depth</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">U_s</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">M_0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;U_s = </span><span class="si">{</span><span class="n">U_s</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">T_u</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">M_0</span><span class="o">/</span><span class="n">M_2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;T_u = </span><span class="si">{</span><span class="n">T_u</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+M_0 = 0.5183982502835391, depth=0 (expected 0.5184)
+M_2 = 0.1684573773307614, depth=0 (expected 0.0043)
+U_s = 1.4399975698361982
+T_u = 11.0221575464895
+M_0 = 1.037236226994421e-09, depth=937
+M_2 = 7.63357886030026e-11, depth=937
+U_s = 6.441230401078418e-05
+T_u = 23.160856109873702
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/develop/local/anaconda3/envs/py3/lib/python3.6/site-packages/ipykernel_launcher.py:5: RuntimeWarning: overflow encountered in sinh
+  &#34;&#34;&#34;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[185]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1">#GE p 35 - these results are good (slight differences in T_u)!</span>
+<span class="n">depth</span><span class="o">=</span><span class="mi">260</span>
+<span class="n">H_s</span> <span class="o">=</span> <span class="mi">11</span>  <span class="c1"># 1 year</span>
+<span class="n">T_p</span> <span class="o">=</span> <span class="mf">14.6</span>
+<span class="n">gamma</span> <span class="o">=</span> <span class="mf">3.3</span>
+<span class="n">U_s</span><span class="p">,</span> <span class="n">T_u</span><span class="p">,</span> <span class="n">T_n</span> <span class="o">=</span> <span class="n">calc_Us_Tu_at_depth</span><span class="p">(</span><span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">,</span> <span class="n">H_s</span><span class="o">=</span><span class="n">H_s</span><span class="p">,</span> <span class="n">T_p</span><span class="o">=</span><span class="n">T_p</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="n">gamma</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;1-year U_s=</span><span class="si">{</span><span class="n">U_s</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, T_u=</span><span class="si">{</span><span class="n">T_u</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, T_n=</span><span class="si">{</span><span class="n">T_n</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, depth=</span><span class="si">{</span><span class="n">depth</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">H_s</span> <span class="o">=</span> <span class="mf">13.691</span>  <span class="c1"># 10 year</span>
+<span class="n">T_p</span> <span class="o">=</span> <span class="mf">15.565</span>
+<span class="n">U_s</span><span class="p">,</span> <span class="n">T_u</span><span class="p">,</span> <span class="n">T_n</span> <span class="o">=</span> <span class="n">calc_Us_Tu_at_depth</span><span class="p">(</span><span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">,</span> <span class="n">H_s</span><span class="o">=</span><span class="n">H_s</span><span class="p">,</span> <span class="n">T_p</span><span class="o">=</span><span class="n">T_p</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="n">gamma</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;10-year U_s=</span><span class="si">{</span><span class="n">U_s</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, T_u=</span><span class="si">{</span><span class="n">T_u</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, T_n=</span><span class="si">{</span><span class="n">T_n</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, depth=</span><span class="si">{</span><span class="n">depth</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">H_s</span> <span class="o">=</span> <span class="mf">16.3</span>  <span class="c1"># 100 year</span>
+<span class="n">T_p</span> <span class="o">=</span> <span class="mf">16.5</span>
+<span class="n">U_s</span><span class="p">,</span> <span class="n">T_u</span><span class="p">,</span> <span class="n">T_n</span> <span class="o">=</span> <span class="n">calc_Us_Tu_at_depth</span><span class="p">(</span><span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">,</span> <span class="n">H_s</span><span class="o">=</span><span class="n">H_s</span><span class="p">,</span> <span class="n">T_p</span><span class="o">=</span><span class="n">T_p</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="n">gamma</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;100-year U_s=</span><span class="si">{</span><span class="n">U_s</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, T_u=</span><span class="si">{</span><span class="n">T_u</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, T_n=</span><span class="si">{</span><span class="n">T_n</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, depth=</span><span class="si">{</span><span class="n">depth</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">H_s</span> <span class="o">=</span> <span class="mf">18.844</span>  <span class="c1"># 1000 year</span>
+<span class="n">T_p</span> <span class="o">=</span> <span class="mf">17.412</span>
+<span class="n">U_s</span><span class="p">,</span> <span class="n">T_u</span><span class="p">,</span> <span class="n">T_n</span> <span class="o">=</span> <span class="n">calc_Us_Tu_at_depth</span><span class="p">(</span><span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">,</span> <span class="n">H_s</span><span class="o">=</span><span class="n">H_s</span><span class="p">,</span> <span class="n">T_p</span><span class="o">=</span><span class="n">T_p</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="n">gamma</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;1000-year U_s=</span><span class="si">{</span><span class="n">U_s</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, T_u=</span><span class="si">{</span><span class="n">T_u</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, T_n=</span><span class="si">{</span><span class="n">T_n</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, depth=</span><span class="si">{</span><span class="n">depth</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1-year U_s=0.059, T_u=17.689, T_n=5.148, depth=260
+10-year U_s=0.103, T_u=18.342, T_n=5.148, depth=260
+100-year U_s=0.163, T_u=18.979, T_n=5.148, depth=260
+1000-year U_s=0.239, T_u=19.597, T_n=5.148, depth=260
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><p class="logo"><a href="index.html">
+<img class="logo" src="_static/logo.png" width="180" alt="Logo"/>
+</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+<h3><a href="index.html">Table of Contents</a></h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="pressure_containment.html">Pipe pressure containment (bursting) according to DNVGL-ST-F101.</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Notebook for investigating JONSWAP waves.</a></li>
+</ul>
+<h3>Links</h3>
+<ul>
+  <li><a href="https://qwilka.github.io/EngNotes/">EngNotes table-of-contents</a></li>
+  <li><a href="https://github.com/qwilka/EngNotes"><b>EngNotes</b> on GitHub</a></li>
+  <li><a href="https://qwilka.github.io/">Qwilka blog</a></li>
+</ul>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Stephen McEntee.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/JONSWAP.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
